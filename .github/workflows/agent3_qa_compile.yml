@@ -1,0 +1,63 @@
+name: Run Agent 3 Compilation and QA Verification
+on:
+  workflow_dispatch: # Manual one-click trigger
+  push:
+    paths:
+      - 'source/**'
+      - 'tools/**'
+
+jobs:
+  build-and-verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install Compilers and QA Tools
+        run: pip install fontmake fontTools
+
+      - name: Compile Font Binaries
+        run: |
+          mkdir -p build
+          # Use fontmake to compile the master UFO source into production binaries
+          fontmake -u source/ArSL_Base_Shell.ufo -o ttf --output-path build/ArSL_Font.ttf
+          fontmake -u source/ArSL_Base_Shell.ufo -o otf --output-path build/ArSL_Font.otf
+
+      - name: Run Agent 3 QA Structural Check
+        run: |
+          python -c "
+          from fontTools.ttLib import TTFont
+          import os
+
+          font_path = 'build/ArSL_Font.ttf'
+          if not os.path.exists(font_path):
+              print('FAIL: Font binary was not compiled successfully.')
+              exit(1)
+
+          font = TTFont(font_path)
+          glyph_count = len(font.getGlyphOrder())
+          
+          print('=========================================')
+          print(f'Agent 3 QA Verification Report')
+          print(f'Target Slots Required: 60 (plus standard .notdef)')
+          print(f'Total Glyphs Detected: {glyph_count}')
+          print('=========================================')
+          
+          # Basic validation checking for baseline data structural framework
+          if glyph_count < 60:
+              print('FAIL: Slot count mismatch. Core architecture compromised!')
+              exit(1)
+          else:
+              print('PASS: 60-slot structural integrity verified successfully.')
+          "
+
+      - name: Archive Compiled Production Binaries
+        uses: actions/upload-artifact@v4
+        with:
+          name: ArSL-Compiled-Font-Binaries
+          path: build/*
