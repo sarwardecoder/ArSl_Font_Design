@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="ASL_003" format="2">
+  <advance width="1000"/>
+  <unicode hex="E002"/>
+  <note>
+PUA=E002 Arabic=0623
+</note>
+  <outline>
+  </outline>
+</glyph>
