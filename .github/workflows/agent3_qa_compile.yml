@@ -1,6 +1,6 @@
 name: Run Agent 3 Compilation and QA Verification
 on:
-  workflow_dispatch:
+  workflow_dispatch: 
   push:
     paths:
       - 'source/**'
@@ -10,20 +10,13 @@ jobs:
   build-and-verify:
     runs-on: ubuntu-latest
     steps:
-      # UPGRADED: Switched to v4.2.2+ or look out for v5 tracking branches for native Node support
       - name: Checkout Repository
         uses: actions/checkout@v4
-        with:
-          sparse-checkout: |
-            source
-            tools
 
-      # UPGRADED: Pinning to stable minor versions that address runner environments
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
-          update-environment: true
 
       - name: Install Compilers and QA Tools
         run: pip install fontmake fontTools
@@ -61,10 +54,8 @@ jobs:
               print('PASS: 60-slot structural integrity verified successfully.')
           "
 
-      # UPGRADED: Explicit patch release to clear the runtime warnings completely
       - name: Archive Compiled Production Binaries
         uses: actions/upload-artifact@v4
         with:
           name: ArSL-Compiled-Font-Binaries
           path: build/*
-          compression-level: 9
