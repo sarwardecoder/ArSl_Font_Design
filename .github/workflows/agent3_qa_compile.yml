@@ -1,10 +1,6 @@
 name: Run Agent 3 Compilation and QA Verification
 on:
   workflow_dispatch: 
-  push:
-    paths:
-      - 'source/**'
-      - 'tools/**'
 
 jobs:
   build-and-verify:
@@ -20,6 +16,9 @@ jobs:
 
       - name: Install Compilers and QA Tools
         run: pip install fontmake fontTools
+
+      - name: Inject Programmatic Vector Geometries via Agent 2 Tool
+        run: python tools/inject_vectors.py
 
       - name: Compile Font Binaries
         run: |
