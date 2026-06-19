@@ -15,9 +15,10 @@ def inject_placeholder_vectors(ufo_path):
     
     # Define a simple, clean test square boundary matrix (200x200 units) to inject as a placeholder
     # This proves the rendering engines can draw our shapes correctly.
+   # An explicitly closed vector loop format that passes compiler rules smoothly
     test_contour = """
     <contour>
-      <point x="200" y="0" type="move"/>
+      <point x="200" y="0" type="line"/>
       <point x="200" y="200" type="line"/>
       <point x="400" y="200" type="line"/>
       <point x="400" y="0" type="line"/>
