@@ -59,9 +59,9 @@ jobs:
               print('PASS: 60-slot structural integrity verified successfully.')
           "
 
-      # Archives the final compiled results for immediate download
+      ## UPGRADED: Swapped from @v4 to @v5 to run natively on Node 24
       - name: Archive Compiled Production Binaries
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: ArSL-Compiled-Font-Binaries
           path: build/*
