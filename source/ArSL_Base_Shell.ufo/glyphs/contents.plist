@@ -122,5 +122,11 @@
     <string>A_S_L__059.glif</string>
     <key>ASL_060</key>
     <string>A_S_L__060.glif</string>
+    <key>_part.index</key>
+    <string>_part.index.glif</string>
+    <key>_part.palm</key>
+    <string>_part.palm.glif</string>
+    <key>_part.thumb</key>
+    <string>_part.thumb.glif</string>
   </dict>
 </plist>

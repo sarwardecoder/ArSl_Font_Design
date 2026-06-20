@@ -3,8 +3,11 @@
   <advance width="1000"/>
   <unicode hex="E000"/>
   <note>
-PUA=E000 Arabic=0621
+Linked invisible template component layers: _part.palm, _part.index, _part.thumb
 </note>
   <outline>
+    <component base="_part.palm"/>
+    <component base="_part.index"/>
+    <component base="_part.thumb"/>
   </outline>
 </glyph>

@@ -65,3 +65,6 @@ jobs:
         with:
           name: ArSL-Compiled-Font-Binaries
           path: build/*
+
+      - name: Inject Programmatic Component Layers via Agent 2 Tool
+        run: python tools/inject_component_layers.py
