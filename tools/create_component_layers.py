@@ -30,7 +30,10 @@ PART_GLYPHS = [
 ]
 
 # Active handshape slots that will reference all 3 part glyphs as components
-ACTIVE_SLOTS = [f"ASL_{i:03d}" for i in range(1, 6)]  # ASL_001 … ASL_005
+#ACTIVE_SLOTS = [f"ASL_{i:03d}" for i in range(1, 6)]  # ASL_001 … ASL_005
+
+# Spans systematically across all 28 alphabet slots
+ACTIVE_SLOTS = [f"ASL_{i:03d}" for i in range(1, 29)]  # ASL_001 … ASL_028
 
 # Component offsets per part role (x, y) — relative to each slot's origin
 COMPONENT_OFFSETS = {

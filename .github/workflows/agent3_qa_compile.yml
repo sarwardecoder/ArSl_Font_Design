@@ -6,7 +6,7 @@
           pip install fontmake fontTools
 
       - name: Inject Programmatic Component Layers via Agent 2 Tool
-        run: python tools/inject_component_layers.py
+        run: python tools/create_component_layers.py
 
       - name: Compile Font Binaries
         run: |
