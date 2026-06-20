@@ -6,28 +6,32 @@ jobs:
   build-and-verify:
     runs-on: ubuntu-latest
     steps:
-      # UPGRADED: Bumping to v5+ natively utilizes the Node 24 runtime
+      # Native Node 24 checkout architecture
       - name: Checkout Repository
         uses: actions/checkout@v5
 
-      # UPGRADED: Bumping to v6+ targets the Node 24 architecture natively
+      # Native Node 24 runtime provider
       - name: Set up Python Environment
         uses: actions/setup-python@v6
         with:
           python-version: '3.10'
 
+      # Installs compilation dependency binaries
       - name: Install Compilers and QA Tools
         run: pip install fontmake fontTools
 
+      # Agent 2 automation inserts closed path vectors across the slots
       - name: Inject Programmatic Vector Geometries via Agent 2 Tool
         run: python tools/inject_vectors.py
 
+      # Compiles the master UFO directory straight into distribution files
       - name: Compile Font Binaries
         run: |
           mkdir -p build
           fontmake -u source/ArSL_Base_Shell.ufo -o ttf --keep-overlaps --no-autohint --output-path build/ArSL_Font.ttf
           fontmake -u source/ArSL_Base_Shell.ufo -o otf --keep-overlaps --no-autohint --output-path build/ArSL_Font.otf
 
+      # Verification step ensures all 60 base structures exist natively
       - name: Run Agent 3 QA Structural Check
         run: |
           python -c "
@@ -55,9 +59,9 @@ jobs:
               print('PASS: 60-slot structural integrity verified successfully.')
           "
 
-      # UPGRADED: Bumping to v5+ to keep artifact storage aligned on Node 24
+      # Archives the final compiled results for immediate download
       - name: Archive Compiled Production Binaries
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v4
         with:
           name: ArSL-Compiled-Font-Binaries
           path: build/*
