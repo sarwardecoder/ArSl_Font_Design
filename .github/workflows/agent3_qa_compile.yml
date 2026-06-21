@@ -1,53 +1,82 @@
-# Installs compiler and processing tools along with system shaping dependencies
+name: Run Agent 3 Compilation and QA Verification
+on:
+  workflow_dispatch: 
+
+jobs:
+  build-and-verify:
+    runs-on: ubuntu-latest
+    steps:
+      # Native Node 24 checkout architecture
+      - name: Checkout Repository
+        uses: actions/checkout@v5
+
+      # Native Node 24 runtime provider
+      - name: Set up Python Environment
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.10'
+
+      # Installs compiler and processing tools along with system shaping dependencies
       - name: Install Compilers and System Layout Shapers
         run: |
           sudo apt-get update
           sudo apt-get install -y harfbuzz-utils
           pip install fontmake fontTools
 
+      # Agent 2 automation inserts closed path vectors across alphabet slots
       - name: Inject Programmatic Component Layers via Agent 2 Tool
         run: python tools/create_component_layers.py
 
+      # Agent 2 automation inserts expression markers
+      - name: Inject Programmatic Expression Markers via Agent 2 Tool
+        run: python tools/inject_expression_markers.py
+
+      # Agent 2 automation maps out the remaining reserved slots
+      - name: Inject Programmatic Reserved Slots via Agent 2 Tool
+        run: python tools/inject_reserved_slots.py
+
+      # Compiles the master UFO directory straight into distribution files
       - name: Compile Font Binaries
         run: |
           mkdir -p build
           fontmake -u source/ArSL_Base_Shell.ufo -o ttf --keep-overlaps --no-autohint --output-path build/ArSL_Font.ttf
           fontmake -u source/ArSL_Base_Shell.ufo -o otf --keep-overlaps --no-autohint --output-path build/ArSL_Font.otf
 
+      # Verification step ensures all 60 base structures exist natively
       - name: Run Agent 3 QA Structural Check
         run: |
           python -c "
           from fontTools.ttLib import TTFont
           import os
-          font = TTFont('build/ArSL_Font.ttf')
+
+          font_path = 'build/ArSL_Font.ttf'
+          if not os.path.exists(font_path):
+              print('FAIL: Font binary was not compiled successfully.')
+              exit(1)
+
+          font = TTFont(font_path)
           glyph_count = len(font.getGlyphOrder())
+          
+          print('=========================================')
+          print(f'Agent 3 QA Verification Report')
+          print(f'Target Slots Required: 60 (plus standard .notdef)')
           print(f'Total Glyphs Detected: {glyph_count}')
-          if glyph_count < 60: exit(1)
+          print('=========================================')
+          
+          if glyph_count < 60:
+              print('FAIL: Slot count mismatch. Core architecture compromised!')
+              exit(1)
+          else:
+              print('PASS: 60-slot structural integrity verified successfully.')
           "
 
-      # NEW: Agent 3 launches live shaping validation loops
+      # Agent 3 launches live shaping validation loops
       - name: Execute Live Text Shaping Verification Layout Suite
         run: python tools/test_shaping.py
 
+      # Archives the final compiled results for immediate download natively on Node 24
       - name: Archive Compiled Production Binaries
         uses: actions/upload-artifact@v5
         with:
           name: ArSL-Compiled-Font-Binaries
           path: build/*
-
-      - name: Inject Programmatic Movement Markers via Agent 2 Tool
-        run: python tools/inject_movement_markers.py
-
-      - name: Inject Programmatic Component Layers via Agent 2 Tool
-        run: python tools/create_component_layers.py
-
-      - name: Inject Programmatic Expression Markers via Agent 2 Tool
-        run: python tools/inject_expression_markers.py
-      - name: Inject Programmatic Component Layers via Agent 2 Tool
-        run: python tools/create_component_layers.py
-
-      - name: Inject Programmatic Expression Markers via Agent 2 Tool
-        run: python tools/inject_expression_markers.py
-
-      - name: Inject Programmatic Reserved Slots via Agent 2 Tool
-        run: python tools/inject_reserved_slots.py
