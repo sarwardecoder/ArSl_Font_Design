@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="ASL_002" format="2">
+  <advance width="1000"/>
+  <unicode hex="E001"/>
+  <note>
+Linked invisible template component layers: _part.palm, _part.index, _part.thumb
+</note>
+  <outline>
+    <component base="_part.palm"/>
+    <component base="_part.index"/>
+    <component base="_part.thumb"/>
+  </outline>
+</glyph>

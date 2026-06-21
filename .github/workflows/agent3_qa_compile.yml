@@ -37,9 +37,17 @@
 
       - name: Inject Programmatic Movement Markers via Agent 2 Tool
         run: python tools/inject_movement_markers.py
-        
+
       - name: Inject Programmatic Component Layers via Agent 2 Tool
         run: python tools/create_component_layers.py
 
       - name: Inject Programmatic Expression Markers via Agent 2 Tool
         run: python tools/inject_expression_markers.py
+      - name: Inject Programmatic Component Layers via Agent 2 Tool
+        run: python tools/create_component_layers.py
+
+      - name: Inject Programmatic Expression Markers via Agent 2 Tool
+        run: python tools/inject_expression_markers.py
+
+      - name: Inject Programmatic Reserved Slots via Agent 2 Tool
+        run: python tools/inject_reserved_slots.py

@@ -48,13 +48,12 @@ def main():
         print("Standardizing layout tracking via fallback TTFont map analytics.")
         return
 
-    # Sample testing injection strings: 
-    # Continuous Arabic character sequences and PUA mapped component combinations
+# Sample testing injection strings: 
+    # Added a sequence combining Handshape 1 (U+E000) with Facial Expression 1 (U+E028)
     test_cases = [
-        "\u0627\u0644\u0635",       # Arabic string sequence: Alif + Lam + Sad
-        "\uE000\uE001\uE002",       # Sequential PUA composite structural components
+        "\u0627\u0644\u0635",       # Standard Arabic string sequence
+        "\uE000\uE028",             # Handshape ASL_001 + Expression ASL_041
     ]
-
     passed = True
     for text in test_cases:
         glyph_output = run_shaping_test(font_target, text)
