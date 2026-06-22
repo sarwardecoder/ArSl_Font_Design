@@ -24,9 +24,44 @@ def main():
     glyphs_dir = UFO_PATH / "glyphs"
     glyphs_dir.mkdir(parents=True, exist_ok=True)
     
-    # Ensure baseline metainfo exists
-    with open(UFO_PATH / "metainfo.plist", "wb") as f:
-        plistlib.dump({"creator": "ArSL_Engine", "formatVersion": 3}, f)
+    # Initialize UFO metadata files if missing
+    # metainfo.plist
+    metainfo_path = UFO_PATH / "metainfo.plist"
+    metainfo = {}
+    if metainfo_path.exists():
+        with open(metainfo_path, "rb") as f:
+            metainfo = plistlib.load(f)
+    metainfo.update({"creator": "ArSL_Engine", "formatVersion": 3})
+    with open(metainfo_path, "wb") as f:
+        plistlib.dump(metainfo, f)
+    
+    # fontinfo.plist
+    fontinfo_path = UFO_PATH / "fontinfo.plist"
+    if not fontinfo_path.exists():
+        fontinfo = {
+            "familyName": "Arabic Sign Language Font",
+            "unitsPerEm": 1000,
+            "ascender": 800,
+            "descender": -200,
+            "xHeight": 500,
+            "capHeight": 700
+        }
+        with open(fontinfo_path, "wb") as f:
+            plistlib.dump(fontinfo, f)
+    
+    # layercontents.plist
+    layercontents_path = UFO_PATH / "layercontents.plist"
+    if not layercontents_path.exists():
+        layercontents = [["public.default", "glyphs"]]
+        with open(layercontents_path, "wb") as f:
+            plistlib.dump(layercontents, f)
+    
+    # groups.plist
+    groups_path = UFO_PATH / "groups.plist"
+    if not groups_path.exists():
+        groups = {}
+        with open(groups_path, "wb") as f:
+            plistlib.dump(groups, f)
 
     contents_path = glyphs_dir / "contents.plist"
     contents = {}

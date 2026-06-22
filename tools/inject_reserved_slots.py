@@ -23,9 +23,15 @@ def main():
     with open(contents_path, "wb") as f:
         plistlib.dump(contents, f, sort_keys=True)
 
-    # Output baseline global font layout properties mapping constraints
-    with open(UFO_PATH / "lib.plist", "wb") as f:
-        plistlib.dump({"public.glyphOrder": sorted(list(contents.keys()))}, f)
+    # Preserve lib.plist and only update glyphOrder
+    lib_path = UFO_PATH / "lib.plist"
+    lib = {}
+    if lib_path.exists():
+        with open(lib_path, "rb") as f:
+            lib = plistlib.load(f)
+    lib["public.glyphOrder"] = sorted(list(contents.keys()))
+    with open(lib_path, "wb") as f:
+        plistlib.dump(lib, f)
         
     print(f"✅ Successfully preserved {len(RESERVED_SLOTS)} dialect expansion slots.")
 
