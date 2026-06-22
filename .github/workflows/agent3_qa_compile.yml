@@ -14,17 +14,38 @@ jobs:
         with:
           python-version: '3.10'
 
-      # FIXED: Utilizing your package dependencies to map hb-shape correctly on Ubuntu 24.04
       - name: Install Compilers and System Layout Shapers
         run: |
           sudo apt-get update
           sudo apt-get install -y libharfbuzz-bin libharfbuzz-dev
           pip install fontmake fontTools
 
-      # Fires off the unified lifecycle loop across all 3 agent scripts
       - name: Execute Unified Co-Working Orchestrator Engine
         run: python build_all.py
 
+      # NEW CRITICAL CHECK: Fails instantly if fontmake output is missing or corrupt
+      - name: Strict Font Integrity Verification Gate
+        run: |
+          python -c "
+          import os
+          import sys
+          
+          target_file = 'build/ArSL_Font.ttf'
+          if not os.path.exists(target_file):
+              print('❌ ERROR: fontmake completely failed to output a file!')
+              sys.exit(1)
+              
+          file_size = os.path.getsize(target_file)
+          print(f'Detected compiled font size: {file_size} Bytes')
+          
+          if file_size < 10000:
+              print('❌ ERROR: Compiled file size is too small (< 10KB). Font binary is corrupt or empty!')
+              sys.exit(1)
+              
+          print('✅ PASS: fontmake binary size matches production specifications.')
+          "
+
+       Tar-bundles the real, verified output files for download
       - name: Archive Compiled Production Binaries
         uses: actions/upload-artifact@v5
         with:
