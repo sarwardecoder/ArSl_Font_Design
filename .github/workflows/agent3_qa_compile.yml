@@ -14,6 +14,7 @@ jobs:
         with:
           python-version: '3.10'
 
+       Ried-and-true layout tools package management layer
       - name: Install Compilers and System Layout Shapers
         run: |
           sudo apt-get update
@@ -45,7 +46,8 @@ jobs:
           print('✅ PASS: fontmake binary size matches production specifications.')
           "
 
-       Tar-bundles the real, verified output files for download
+      # FIXED: Turn this line into a valid YAML comment using the pound sign (#)
+      # Tar-bundles the real, verified output files for download
       - name: Archive Compiled Production Binaries
         uses: actions/upload-artifact@v5
         with:
