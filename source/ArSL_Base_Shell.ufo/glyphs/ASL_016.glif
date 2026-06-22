@@ -1,9 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<glyph name="ASL_016" format="2">
-  <advance width="600"/>
-  <outline>
-    <component base="_part.palm" xOffset="0" yOffset="0" xScale="1" xyScale="0" yxScale="0" yScale="1"/>
-    <component base="_part.index" xOffset="0" yOffset="80" xScale="1" xyScale="0" yxScale="0" yScale="1"/>
-    <component base="_part.thumb" xOffset="60" yOffset="40" xScale="1" xyScale="0" yxScale="0" yScale="1"/>
-  </outline>
-</glyph>
+<?xml version="1.0" encoding="UTF-8"?><glyph name="ASL_016" format="2"><advance width="600"/><outline><component base="_part.palm" xOffset="0" yOffset="0"/><component base="_part.index" xOffset="0" yOffset="80"/><component base="_part.thumb" xOffset="60" yOffset="40"/></outline></glyph>

@@ -14,13 +14,14 @@ jobs:
         with:
           python-version: '3.10'
 
+      # FIXED: Utilizing your package dependencies to map hb-shape correctly on Ubuntu 24.04
       - name: Install Compilers and System Layout Shapers
         run: |
           sudo apt-get update
-          sudo apt-get install -y harfbuzz-tools
+          sudo apt-get install -y libharfbuzz-bin libharfbuzz-dev
           pip install fontmake fontTools
 
-      # ONE RUNNER TO RULE THEM ALL: Fires off the unified lifecycle loop
+      # Fires off the unified lifecycle loop across all 3 agent scripts
       - name: Execute Unified Co-Working Orchestrator Engine
         run: python build_all.py
 
