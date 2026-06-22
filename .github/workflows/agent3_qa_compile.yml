@@ -14,57 +14,15 @@ jobs:
         with:
           python-version: '3.10'
 
-      # FIXED: Updated system layout package dependency names for Ubuntu 24.04 compatibility
       - name: Install Compilers and System Layout Shapers
         run: |
           sudo apt-get update
           sudo apt-get install -y harfbuzz-tools
           pip install fontmake fontTools
 
-      - name: Inject Programmatic Component Layers via Agent 2 Tool
-        run: python tools/create_component_layers.py
-
-      - name: Inject Programmatic Expression Markers via Agent 2 Tool
-        run: python tools/inject_expression_markers.py
-
-      - name: Inject Programmatic Reserved Slots via Agent 2 Tool
-        run: python tools/inject_reserved_slots.py
-
-      - name: Compile Font Binaries
-        run: |
-          mkdir -p build
-          fontmake -u source/ArSL_Base_Shell.ufo -o ttf --keep-overlaps --no-autohint --output-path build/ArSL_Font.ttf
-          fontmake -u source/ArSL_Base_Shell.ufo -o otf --keep-overlaps --no-autohint --output-path build/ArSL_Font.otf
-
-      - name: Run Agent 3 QA Structural Check
-        run: |
-          python -c "
-          from fontTools.ttLib import TTFont
-          import os
-
-          font_path = 'build/ArSL_Font.ttf'
-          if not os.path.exists(font_path):
-              print('FAIL: Font binary was not compiled successfully.')
-              exit(1)
-
-          font = TTFont(font_path)
-          glyph_count = len(font.getGlyphOrder())
-          
-          print('=========================================')
-          print(f'Agent 3 QA Verification Report')
-          print(f'Target Slots Required: 60 (plus standard .notdef)')
-          print(f'Total Glyphs Detected: {glyph_count}')
-          print('=========================================')
-          
-          if glyph_count < 60:
-              print('FAIL: Slot count mismatch. Core architecture compromised!')
-              exit(1)
-          else:
-              print('PASS: 60-slot structural integrity verified successfully.')
-          "
-
-      - name: Execute Live Text Shaping Verification Layout Suite
-        run: python tools/test_shaping.py
+      # ONE RUNNER TO RULE THEM ALL: Fires off the unified lifecycle loop
+      - name: Execute Unified Co-Working Orchestrator Engine
+        run: python build_all.py
 
       - name: Archive Compiled Production Binaries
         uses: actions/upload-artifact@v5
